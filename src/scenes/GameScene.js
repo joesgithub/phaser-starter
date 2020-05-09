@@ -1,7 +1,12 @@
 import Phaser from 'phaser';
 
+import { config } from '../config';
+
+import Player from '../ui/Player';
+
 import ScoreLabel from '../ui/ScoreLabel';
 import BombSpawner from '../ui/BombSpawner';
+import StarSpawner from '../ui/StarSpawner';
 
 const KEYS = {
 	GROUND: 'ground',
@@ -19,7 +24,7 @@ export default class GameScene extends Phaser.Scene {
 		this.cursors;
 		this.stars;
 		this.scoreLabel;
-		this.bombSpawner;
+		this.bombs;
 		this.gameOver = false;
 	}
 
@@ -40,23 +45,27 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	create() {
-		this.add.image(400, 300, 'sky');
+		this.add.image(config.width/2, config.height/2, 'sky');
 
 		this.platforms = this.createPlatforms();
-		this.player = this.createPlayer();
-		this.stars = this.createStars();
+
+		this.player = new Player(this, KEYS.DUDE);
+		const player = this.player.createPlayer();
+
+		this.stars = new StarSpawner(this, KEYS.STAR);
+		this.starsGroup = this.stars.group;
 
 		this.scoreLabel = this.createScoreLabel(16, 16, 0);
 
-		this.bombSpawner = new BombSpawner(this, KEYS.BOMB);
-		const bombsGroup = this.bombSpawner.group;
+		this.bombs = new BombSpawner(this, KEYS.BOMB);
+		const bombsGroup = this.bombs.group;
 
-		this.physics.add.collider(this.player, this.platforms);
-		this.physics.add.collider(this.stars, this.platforms);
+		this.physics.add.collider(player, this.platforms);
+		this.physics.add.collider(this.starsGroup, this.platforms);
 		this.physics.add.collider(bombsGroup, this.platforms);
-		this.physics.add.collider(this.player, bombsGroup, this.hitBomb, null, this);
+		this.physics.add.collider(player, bombsGroup, this.hitBomb, null, this);
 
-		this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
+		this.physics.add.overlap(player, this.starsGroup, this.collectStar, null, this);
 
 		this.cursors = this.input.keyboard.createCursorKeys();
 	}
@@ -64,41 +73,27 @@ export default class GameScene extends Phaser.Scene {
 	update() {
 		if(this.gameOver) return;
 
-		if(this.cursors.left.isDown) {
-			this.player.setVelocityX(-160);
-			this.player.anims.play('left', true);
-		} else if(this.cursors.right.isDown) {
-			this.player.setVelocityX(160);
-			this.player.anims.play('right', true);
-		} else {
-			this.player.setVelocityX(0);
-			this.player.anims.play('turn');
-		}
-
-		if(this.cursors.up.isDown && this.player.body.touching.down) {
-			this.player.setVelocityY(-330);
-		}
+		this.player.setCursors(this.cursors);
 	}
 
 	collectStar(player, star) {
-		star.disableBody(true, true);
+		this.stars.disable(star);
 
 		this.scoreLabel.add(10);
 
-		if(this.stars.countActive(true) === 0) {
-			// re-enable stars (a new batch to collect)
-			this.stars.children.iterate(star => {
-				star.enableBody(true, star.x, 0, true, true);
-			});
-		}
+		this.stars.respawnAll();
 
-		this.bombSpawner.spawn(player.x);
+		this.bombs.spawn(player.x);
 	}
 
 	hitBomb(player, bomb) {
 		this.physics.pause();
-		player.setTint(0xff0000);
-		player.anims.play('turn');
+
+		this.player.gameOver();
+
+		const gameOverText = this.add.text(0, 0, 'GAME OVER', {fontSize: '60px', fontWeight: '700'});
+		gameOverText.setX((config.width/2) - (gameOverText.displayWidth/2)).setY((config.height/2) - (gameOverText.displayHeight/2));
+
 		this.gameOver = true;
 	}
 
@@ -115,57 +110,11 @@ export default class GameScene extends Phaser.Scene {
 	createPlatforms() {
 		const platforms = this.physics.add.staticGroup();
 
-		platforms.create(400, 568, KEYS.GROUND).setScale(2).refreshBody();
-		platforms.create(600, 400, KEYS.GROUND);
-		platforms.create(50, 250, KEYS.GROUND);
-		platforms.create(750, 220, KEYS.GROUND);
+		platforms.create(config.width/2, config.height-32, KEYS.GROUND).setScale(2).refreshBody();
+		platforms.create(config.width-200, config.height-200, KEYS.GROUND);
+		platforms.create(50, config.height-350, KEYS.GROUND);
+		platforms.create(config.width-50, config.height-380, KEYS.GROUND);
 
 		return platforms;
-	}
-
-	createStars() {
-		const stars = this.physics.add.group({
-			key: KEYS.STAR,
-			repeat: 11,
-			setXY: {
-				x: 12,
-				y: 0,
-				stepX: 70,
-			}
-		});
-
-		stars.children.iterate(star => {
-			star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8))
-		});
-
-		return stars;
-	}
-
-	createPlayer() {
-		const player = this.physics.add.sprite(100, 450, KEYS.DUDE);
-		player.setBounce(0.2);
-		player.setCollideWorldBounds(true);
-
-		this.anims.create({
-			key: 'left',
-			frames: this.anims.generateFrameNumbers(KEYS.DUDE, {start: 0, end: 3}),
-			frameRate: 10,
-			repeat: -1,
-		});
-
-		this.anims.create({
-			key: 'turn',
-			frames: [{key: KEYS.DUDE, frame: 4}],
-			frameRate: 20,
-		});
-
-		this.anims.create({
-			key: 'right',
-			frames: this.anims.generateFrameNumbers(KEYS.DUDE, {start: 5, end: 8}),
-			frameRate: 10,
-			repeat: -1,
-		});
-
-		return player;
 	}
 }
