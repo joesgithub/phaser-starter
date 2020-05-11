@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import { config } from '../config';
 
+import Storage from '../utils/Storage';
+
 import Player from '../ui/Player';
 
 import ScoreLabel from '../ui/ScoreLabel';
@@ -19,13 +21,15 @@ export default class GameScene extends Phaser.Scene {
 	constructor() {
 		super('game-scene');
 
-		this.player;
+		this.player = new Player(this, KEYS.DUDE);
 		this.platforms;
+		this.scoreLabel;
 		this.cursors;
 		this.stars;
-		this.scoreLabel;
 		this.bombs;
 		this.gameOver = false;
+
+		Storage.init();
 	}
 
 	preload() {
@@ -47,25 +51,22 @@ export default class GameScene extends Phaser.Scene {
 	create() {
 		this.add.image(config.width/2, config.height/2, 'sky');
 
-		this.platforms = this.createPlatforms();
-
-		this.player = new Player(this, KEYS.DUDE);
-		const player = this.player.createPlayer();
+		const playerSprite = this.player.createPlayer();
 
 		this.stars = new StarSpawner(this, KEYS.STAR);
-		this.starsGroup = this.stars.group;
-
-		this.scoreLabel = this.createScoreLabel(16, 16, 0);
-
+		const starSprites = this.stars.group;
 		this.bombs = new BombSpawner(this, KEYS.BOMB);
-		const bombsGroup = this.bombs.group;
+		const bombSprites = this.bombs.group;
 
-		this.physics.add.collider(player, this.platforms);
-		this.physics.add.collider(this.starsGroup, this.platforms);
-		this.physics.add.collider(bombsGroup, this.platforms);
-		this.physics.add.collider(player, bombsGroup, this.hitBomb, null, this);
+		this.platforms = this.createPlatforms();
+		this.scoreLabel = this.createScoreLabel(16, 16, Storage.loadProp('score') || 0);
 
-		this.physics.add.overlap(player, this.starsGroup, this.collectStar, null, this);
+		this.physics.add.collider(playerSprite, this.platforms);
+		this.physics.add.collider(starSprites, this.platforms);
+		this.physics.add.collider(bombSprites, this.platforms);
+		this.physics.add.collider(playerSprite, bombSprites, this.hitBomb, null, this);
+
+		this.physics.add.overlap(playerSprite, starSprites, this.collectStar, null, this);
 
 		this.cursors = this.input.keyboard.createCursorKeys();
 	}

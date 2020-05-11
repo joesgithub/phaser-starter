@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import Storage from '../utils/Storage';
+
 const formatScore = score => `SCORE: ${score}`;
 
 export default class ScoreLabel extends Phaser.GameObjects.Text {
@@ -12,6 +14,8 @@ export default class ScoreLabel extends Phaser.GameObjects.Text {
 	setScore(score) {
 		this.score = score;
 		this.updateScoreText();
+
+		Storage.saveProp('score', this.score);
 	}
 
 	add(points) {

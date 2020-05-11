@@ -1,6 +1,10 @@
 body {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	/*  this was replaced with
+		scene param in config.js
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	*/
 	margin: 0;
 }

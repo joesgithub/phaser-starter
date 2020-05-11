@@ -6,18 +6,20 @@ import HelloWorldScene from './scenes/HelloWorldScene';
 import GameScene from './scenes/GameScene';
 import ThreeDScene from './scenes/ThreeDScene';
 
-const width = window.innerWidth > 800 ? 800 : window.innerWidth;
-const height = window.innerHeight > 600 ? 600 : window.innerHeight;
-
 export const config = {
 	type: Phaser.AUTO,
-	width,
-	height,
+	width: 800,
+	height: 600,
 	physics: {
 		default: 'arcade',
 		arcade: {
 			gravity: { y: 300 }
 		}
+	},
+	scale: {
+	    mode: Phaser.Scale.FIT,
+	    autoCenter: Phaser.Scale.CENTER_BOTH,
+	    parent: "game",
 	},
 	plugins: {
 		scene: [
