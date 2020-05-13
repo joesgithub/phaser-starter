@@ -92,8 +92,8 @@ export default class GameScene extends Phaser.Scene {
 
 		this.player.gameOver();
 
-		const gameOverText = this.add.text(0, 0, 'GAME OVER', {fontSize: '60px', fontWeight: '700'});
-		gameOverText.setX((config.width/2) - (gameOverText.displayWidth/2)).setY((config.height/2) - (gameOverText.displayHeight/2));
+		const gameOverText = this.add.text(config.width / 2, config.height / 2, 'GAME OVER', {fontSize: '60px', fontWeight: '700'});
+		gameOverText.setOrigin(0.5, 0.5);
 
 		this.gameOver = true;
 	}

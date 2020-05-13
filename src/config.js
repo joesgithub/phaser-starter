@@ -2,6 +2,7 @@
 import '../public/plugins/camera3d.min';
 
 // Scenes
+import SelectScene from './scenes/SelectScene';
 import HelloWorldScene from './scenes/HelloWorldScene';
 import GameScene from './scenes/GameScene';
 import ThreeDScene from './scenes/ThreeDScene';
@@ -31,7 +32,8 @@ export const config = {
 		]
 	},
 	scene: [
-		// ThreeDScene,
+		SelectScene,
+		ThreeDScene,
 		GameScene,
 		HelloWorldScene
 	],
