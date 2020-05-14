@@ -6,6 +6,7 @@ import SelectScene from './scenes/SelectScene';
 import HelloWorldScene from './scenes/HelloWorldScene';
 import GameScene from './scenes/GameScene';
 import ThreeDScene from './scenes/ThreeDScene';
+import InfiniteScene from './scenes/InfiniteScene';
 
 export const config = {
 	type: Phaser.AUTO,
@@ -32,7 +33,8 @@ export const config = {
 		]
 	},
 	scene: [
-		// SelectScene,
+		SelectScene,
+		InfiniteScene,
 		ThreeDScene,
 		GameScene,
 		HelloWorldScene

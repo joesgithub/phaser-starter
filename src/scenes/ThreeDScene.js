@@ -2,12 +2,12 @@ import Phaser from 'phaser';
 
 import { config } from '../config';
 
-const cameraSpeed = 2;
-const cameraZSpeed = cameraSpeed * 4;
+const cameraSpeed = 4;
+const cameraZSpeed = cameraSpeed * 2;
 
 // z goes negative to go forward
 const minZ = -7000;
-const maxZ = 250;
+const maxZ = 130;
 const minX = -100;
 const maxX = 100;
 
@@ -22,6 +22,7 @@ export default class ThreeDScene extends Phaser.Scene {
         this.sky;
         this.horizon;
         this.text;
+        this.floor;
 
 		this.camera;
 		this.cursors;
@@ -33,6 +34,7 @@ export default class ThreeDScene extends Phaser.Scene {
         this.load.image('bg', 'assets/bg.png');
         this.load.image('horizon', 'assets/horizon-wide.png');
         this.load.image('tree', 'assets/tree.png');
+        this.load.image('ground', 'assets/path.png');
     }
 
     create() {
@@ -58,13 +60,13 @@ export default class ThreeDScene extends Phaser.Scene {
         for (var x = 0; x < 10; x++) {
             var bx = (x * 26) - 130;
 
-            this.camera.create(bx, -20, minZ - 200, 'tree');
+            this.camera.create(bx, 0, minZ - 200, 'tree');
         }
 
-        const specificChildren = this.camera.getChildren().slice(0, 2);
+        // first is width x height x depth of cube, second is spacing between each unit
+        this.floor = this.camera.createRect({ x: 1, y: 1, z: 200 }, { x: 0, y: 0, z: 6 }, 'ground');
+        this.camera.translateChildren({x: 0, y: 40, z: -2000}, this.floor);
 
-        // const transform = new Phaser.Math.Matrix4().rotateX(11);
-        // this.camera.transformChildren(transform, specificChildren);
         this.camera.lookAt(0, -1300, minZ);
     }
 
@@ -82,6 +84,7 @@ export default class ThreeDScene extends Phaser.Scene {
 	    	// 	this.camera.y -= cameraSpeed;
 	    	// } else {
             this.camera.z = Phaser.Math.Clamp(this.camera.z - cameraZSpeed, minZ, maxZ);
+            // this.camera.z -= cameraZSpeed;
 	    	// }
     	}
     	if(this.cursors.down.isDown) {
@@ -89,6 +92,7 @@ export default class ThreeDScene extends Phaser.Scene {
 	    	// 	this.camera.y += cameraSpeed;
 	    	// } else {
             this.camera.z = Phaser.Math.Clamp(this.camera.z + cameraZSpeed, minZ, maxZ);
+            // this.camera.z += cameraZSpeed;
 	    	// }
     	}
 

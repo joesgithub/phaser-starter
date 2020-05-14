@@ -25,6 +25,7 @@
 		"parcel-plugin-static-files-copy": "^2.2.1"
 	},
 	"dependencies": {
+		"noisejs": "^2.1.0",
 		"phaser": "^3.23.0"
 	},
 	"parcelCleanPaths": [
