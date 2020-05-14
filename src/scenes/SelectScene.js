@@ -17,7 +17,6 @@ export default class SelectScene extends Phaser.Scene{
     }
 
     create(){
-        console.log(this.scene.manager.keys);
         this.scenes = Object.keys(this.scene.manager.keys).filter(sceneName => sceneName !== 'select-scene');
 
         this.thumbsGroup = this.add.group();

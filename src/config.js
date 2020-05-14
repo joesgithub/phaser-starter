@@ -32,7 +32,7 @@ export const config = {
 		]
 	},
 	scene: [
-		SelectScene,
+		// SelectScene,
 		ThreeDScene,
 		GameScene,
 		HelloWorldScene
