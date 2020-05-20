@@ -2743,4 +2743,4 @@ var t=arguments[3];!function(t){function o(t){function o(t,o,r){this.x=t,this.y=
 },{"../public/plugins/camera3d.min":"hXh3","./scenes/SelectScene":"dZjI","./scenes/HelloWorldScene":"V6oP","./scenes/GameScene":"Tidu","./scenes/ThreeDScene":"RSwi","./scenes/InfiniteScene":"fn6E"}],"epB2":[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var e=t(require("phaser")),r=require("./config");function t(e){return e&&e.__esModule?e:{default:e}}require("./styles/main.css");var u=new e.default.Game(r.config);exports.default=u;
 },{"phaser":"g7IM","./config":"itQ5","./styles/main.css":"kyBz"}]},{},["epB2"], null)
-//# sourceMappingURL=/main.999898d8.js.map
+//# sourceMappingURL=main.999898d8.js.map
