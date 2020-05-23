@@ -1,1 +1,0 @@
-{"version":3,"sources":["main.css"],"names":[],"mappings":"AAAA,KAQC,QACD","file":"main.debc564c.css","sourceRoot":"../src","sourcesContent":["body {\n\t/*  this was replaced with\n\t\tscene param in config.js\n\n\t\tdisplay: flex;\n\t\tjustify-content: center;\n\t\talign-items: center;\n\t*/\n\tmargin: 0;\n}"]}

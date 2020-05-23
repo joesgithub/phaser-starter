@@ -7,4 +7,15 @@ body {
 		align-items: center;
 	*/
 	margin: 0;
+	font-family: sans-serif;
+}
+
+h1 {
+	margin: 1rem 0;
+	text-align: center;
+}
+
+/* tried to do this with config.scale.max */
+#game {
+	max-height: 600px;
 }
