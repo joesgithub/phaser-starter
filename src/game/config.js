@@ -1,6 +1,9 @@
 // Plugins
 import '../../public/plugins/camera3d.min';
 
+// Enable3D
+import { Canvas } from '@enable3d/phaser-extension';
+
 // Scenes
 import SelectScene from './scenes/SelectScene';
 import HelloWorldScene from './scenes/HelloWorldScene';
@@ -8,9 +11,10 @@ import GameScene from './scenes/GameScene';
 import ThreeDScene from './scenes/ThreeDScene';
 import InfiniteScene from './scenes/InfiniteScene';
 import RunnerScene from './scenes/RunnerScene';
+import Enable3DScene from './scenes/Enable3DScene';
 
 export const config = {
-	type: Phaser.AUTO,
+	type: Phaser.WEBGL,
 	width: 800,
 	height: 600,
 	physics: {
@@ -35,10 +39,12 @@ export const config = {
 	},
 	scene: [
 		SelectScene,
+		Enable3DScene,
 		RunnerScene,
 		InfiniteScene,
 		ThreeDScene,
 		GameScene,
 		HelloWorldScene,
 	],
+	...Canvas(),
 };

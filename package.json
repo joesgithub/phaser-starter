@@ -29,6 +29,7 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.9.6",
+		"@enable3d/phaser-extension": "^0.18.0",
 		"noisejs": "^2.1.0",
 		"phaser": "^3.23.0",
 		"public": "^0.1.5",

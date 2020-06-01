@@ -4,10 +4,13 @@ import React from 'react';
 // Phaser
 import Phaser from 'phaser';
 
+// Enable3D
+import { enable3d } from '@enable3d/phaser-extension';
+
 // Config
 import { config } from '../game/config';
 
-const gameObject = new Phaser.Game(config);
+const gameObject = enable3d(() => new Phaser.Game(config)).withPhysics('ammo');
 
 export const Game = () => (
 	<>
